@@ -76,8 +76,7 @@ db_init = function (callback) {
             console.log("INIT: STEP 1. Open MongoDB...");
             db.open(cb);
         },
-        // 2. authenticate
-        /*        
+        // 2. authenticate       
         function (result, cb) {
             console.log("INIT: STEP 2. Authenticate...");
             db.authenticate(db_user, db_pwd, function(err, res) {
@@ -91,7 +90,6 @@ db_init = function (callback) {
                         }
                     });
         },
-        */
         // 3. fetch collections
         function (result, cb) {
             console.log("INIT: STEP 3. Fetch Collections...");
@@ -276,11 +274,13 @@ db_init(function (err, results) {
         console.error(err);
         process.exit(-1);
     } else {
-        console.log( "Server running on Port 8080..." ) ;
         //db.collections(function(err, collections) {
         //    console.log(collections);
         //});
-        app.listen(8080);
+        app.set('port', (process.env.PORT || 8080));
+        app.listen(app.get('port'), function() {
+        console.log('Node app is running on port', app.get('port'));
+        });
     }
 });
 

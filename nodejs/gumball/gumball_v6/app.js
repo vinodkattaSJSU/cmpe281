@@ -29,11 +29,11 @@ var chance = require('chance').Chance();
 
 
 /*
-var db_host = "ds043220.mongolab.com" ;
-var db_port = "43220" ;
-var db_user = "user" ;
-var db_pwd  = "pwd" ;
-var db_name = "db" ;
+var db_host = "localhost" ;
+var db_port = "27017" ;
+var db_user = "cmpe281" ;
+var db_pwd  = "cmpe281" ;
+var db_name = "test" ;
 */
 
 var db_host = "localhost" ;
@@ -91,18 +91,45 @@ var handle_post = function (req, res, next) {
 app.get(  '/gumball/:orderid', handle_get ) ;
 app.post( '/gumball', handle_post ) ;
 
-console.log( "Server running on Port 8080..." ) ;
+app.set('port', (process.env.PORT || 8080));
 
-app.listen(8080);
-
-
+app.listen(app.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'));
+});
 
 /**
 
 -- Test REST API
 
-curl -X POST https://cloud-paulnguyen.c9users.io/gumball
-curl -X GET https://cloud-paulnguyen.c9users.io/gumball/<ordnum>
+curl -X POST http://localhost:8080/gumball
+curl -X GET  http://localhost:8080/gumball/<ordnum>
+
+
+-- MongoDB (Mongo Labs) Connection
+
+Host:   ds043220.mongolab.com
+Port:   43220
+Login:  user
+Passwd: pwd
+
+-- MongoDB (Localhost) Connection
+
+Host:   localhost
+Port:   27017
+
+-- Add Mongodb Admin User
+
+See:  https://docs.mongodb.com/manual/reference/method/db.createUser/
+
+ use test
+ db.createUser(
+    {
+      user: "cmpe281",
+      pwd: "cmpe281",
+      roles: [ "readWrite", "dbAdmin" ]
+    }
+ )
+
 
 -- Gumball MongoDB Collection (Create Document)
 
